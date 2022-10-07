@@ -1,46 +1,47 @@
 import {getConnection} from "@models/sqlite/SqliteConn";
-import { CashFlowDao } from "@models/sqlite/CashFlowDao";
-export interface ICashFlow{
-    type: 'INCOME' | 'EXPENSE';
-    date: Date;
-    amount: number;
-    description: string;
+import { UsersDao } from "@models/sqlite/UsersDao";
+export interface IUsers{
+    name: string;
+    lastName: string;
+    birth: Date;
+    gender: string;
+    direction: string;
     _id?:unknown;
 };
 
-export class CashFlow{
-    private dao: CashFlowDao;
+export class Users{
+    private dao: UsersDao;
     public constructor(){
         getConnection()
-            .then(conn=>{this.dao = new CashFlowDao (conn);})
+            .then(conn=>{this.dao = new UsersDao (conn);})
             .catch(ex=>console.error(ex));
     }
-    private cashFlowItems: ICashFlow[]=[];
+    private UsersItems: IUsers[]=[];
 
     //Consultas
-   public getAllCashFlowItems(){
-        return this.dao.getCashFlows();
+   public getAllUsers(){
+        return this.dao.getUsers();
     }
 
-    public getCashFlowByIndex(index: number){
-       return this.dao.getCashFlowById({_id: index});
+    public getUserByIndex(index: number){
+       return this.dao.getUserById({_id: index});
     }
 
-    public addCashFlow(cashFlow: ICashFlow) {
-        return this.dao.insertNewCashFlow(cashFlow);
+    public addUser(user: IUsers) {
+        return this.dao.insertUser(user);
     }
-    public updateCashFlow(index: number, cashFlow:ICashFlow):boolean{
-        if(index>=0 && index < this.cashFlowItems.length){
-            this.cashFlowItems[index]= cashFlow;
+    public updateUser(index: number, user:IUsers):boolean{
+        if(index>=0 && index < this.UsersItems.length){
+            this.UsersItems[index]= user;
             return true;
         }
         return false;
     }
 
-    public deleteCashFlow(index: number):boolean{
-        if(index>=0 && index < this.cashFlowItems.length){
-            this.cashFlowItems=this.cashFlowItems.filter(
-                (_obj:ICashFlow, i:number)=>i !==index
+    public deleteUser(index: number):boolean{
+        if(index>=0 && index < this.UsersItems.length){
+            this.UsersItems=this.UsersItems.filter(
+                (_obj:IUsers, i:number)=>i !==index
             );
             return true;
         }

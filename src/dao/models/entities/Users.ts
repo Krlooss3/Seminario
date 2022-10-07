@@ -1,4 +1,4 @@
-export interface ICashFlow{
+export interface IUsers{
     name: string;
     lastName: string;
     birth: Date;
